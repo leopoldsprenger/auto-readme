@@ -54,7 +54,8 @@ def summarize_files(files_dict: Dict[str, str]) -> Dict[str, str]:
 def generate_readme_content(
     summarized_files: Dict[str, str],
     binary_files: List[str],
-    repo_full_name: str
+    repo_full_name: str,
+    user_prompt: str = ""
 ) -> str:
     """
     Generates the content of a README file for the repository by combining file summaries and other details.
@@ -72,6 +73,7 @@ def generate_readme_content(
         + f"\nThe repository is named {repo_full_name}"
         + "\nFile summaries: " + str(summarized_files)
         + "\nBinary Files: " + str(binary_files)
+        + f"\nThe user requested a specific structure or personal adjustment: {user_prompt}"
     )
     return get_response(readme_prompt)
 
