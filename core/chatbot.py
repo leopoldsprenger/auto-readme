@@ -3,19 +3,19 @@ from typing import Literal, Dict
 
 # Prompt templates for the chatbot
 prompts: Dict[str, str] = {
-    "one file summary":
-    ("Please summarize this file briefly in markdown and don't add any text other than the summary to your answer. "
-     "Include a 2 sentence summary of the code function and any explanation for sections that could be important to mention "
-     "in a readme file for any repository that file may be in:"),
-    "generate readme":
-    ("Take all of these readme files and generate a single readme file for the entire repository. "
-     "Don't write the markdown declaration symbols before and after the contents of the readme file, just return its contents. "
-     "Also don't add anything like 'here is the contents of the readme file', just return the readme file without any further explanation. "
-     "Make it interactive with distinct sections like installation, usage, and license. Include installation instructions, usage examples, and license information. "
-     "Also make a project overview section that includes a brief description of the project and its purpose with links to clickable headers. "
-     "Please also use the names of the provided binary files and include them as embeds in the readme file when you think applicable (use the file names and endings as context clues). "
-     "If you find an already existing readme in the files I list, please restructure it or completely rewrite it depending on how in-depth it is, since the user wants a new one."
-     )
+    "one file summary": (
+        "Summarize the following source code file in markdown. Do not include any text outside of the summary itself. "
+        "Begin with a 1–2 sentence high-level overview of the file’s purpose. "
+        "Then include specific code snippets with concise explanations for important parts that should be highlighted in a README (e.g., core classes, scraping functions, model definitions, etc.)."
+    ),
+    "generate readme": (
+        "Create a complete README file in markdown for this GitHub repository based on the summaries provided. "
+        "Do not add any extra commentary or markdown code block markers — just return the raw README content. "
+        "Structure the README with clear sections: Project Overview, Installation, Usage, License. "
+        "Include a brief project description with purpose, and make section headers clickable (i.e., anchor links). "
+        "If existing README content is present, restructure or rewrite it to meet these standards. "
+        "If binary files (e.g., images, GIFs) are provided, embed them using their filenames when relevant (e.g., demo visuals)."
+    )
 }
 
 
