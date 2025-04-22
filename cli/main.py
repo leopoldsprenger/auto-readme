@@ -52,32 +52,45 @@ def main() -> None:
     repo_full_name = arguments.repo
     custom_prompt = arguments.prompt
 
-    print(f"{Fore.CYAN}Starting README generation for: {repo_full_name}{Style.RESET_ALL}")
+    try:
+        print(f"{Fore.CYAN}Starting README generation for: {repo_full_name}{Style.RESET_ALL}")
 
-    print(f"{Fore.YELLOW}Fetching repository files...{Style.RESET_ALL}")
-    files_dict, binary_files = get_repository_files(repo_full_name)
+        print(f"{Fore.YELLOW}Fetching repository files...{Style.RESET_ALL}")
+        try:
+            files_dict, binary_files = get_repository_files(repo_full_name)
+        except Exception as e:
+            print(f"{Fore.RED}Error fetching repository files: {e}{Style.RESET_ALL}")
+            sys.exit(1)
 
-    print(f"{Fore.YELLOW}Summarizing text files...{Style.RESET_ALL}")
-    summarized_files = summarize_files(files_dict)
+        if not files_dict:
+            raise ValueError("No files found in the repository.")
 
-    print(f"{Fore.YELLOW}Generating README content...{Style.RESET_ALL}")
-    readme_content = generate_readme_content(
-        summarized_files,
-        binary_files,
-        repo_full_name,
-        user_prompt=custom_prompt
-    )
+        print(f"{Fore.YELLOW}Summarizing text files...{Style.RESET_ALL}")
+        summarized_files = summarize_files(files_dict)
 
-    print(f"{Fore.GREEN}Saving README to 'README_output.md'...{Style.RESET_ALL}")
-    save_readme(readme_content)
+        print(f"{Fore.YELLOW}Generating README content...{Style.RESET_ALL}")
+        readme_content = generate_readme_content(
+            summarized_files,
+            binary_files,
+            repo_full_name,
+            user_prompt=custom_prompt
+        )
 
-    print(f"{Fore.GREEN}README generation complete.{Style.RESET_ALL}")
+        print(f"{Fore.GREEN}Saving README to 'README_output.md'...{Style.RESET_ALL}")
+        save_readme(readme_content)
+
+        print(f"{Fore.GREEN}README generation complete.{Style.RESET_ALL}")
+
+    except ValueError as e:
+        print(f"{Fore.RED}Error: {e}{Style.RESET_ALL}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"{Fore.RED}An unexpected error occurred: {e}{Style.RESET_ALL}")
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print(f"\n{Fore.RED}Program interrupted by user.{Style.RESET_ALL}")
+        sys.exit(0)
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print(f"{Fore.RED}An error occurred: {e}{Style.RESET_ALL}")
-    except KeyboardInterrupt:
-        print(f"\n{Fore.RED}Program interrupted by user.{Style.RESET_ALL}")
+    main()
