@@ -1,5 +1,3 @@
-from operator import eq
-from tkinter.constants import E
 import argparse
 import sys
 from pathlib import Path
